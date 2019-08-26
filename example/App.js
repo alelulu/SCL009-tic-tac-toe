@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Image, Button } from 'react-native';
 
 export default function App() {
 
@@ -22,10 +22,10 @@ export default function App() {
   const renderPosition = (row, col) => {
     let position = gameGrid[row][col];
     if(position == 1){
-      return <View><Text style={styles.cross}>X</Text></View>
+      return <View><Image source={require('./assets/cat.png')} style={styles.icon}/></View>
     }
     else if(position == -1){
-      return <View><Text style={styles.zero}>0</Text></View>
+      return <View><Image source={require('./assets/dog.png')} style={styles.icon}/></View>
     }
     else{
       return <View></View>
@@ -102,7 +102,17 @@ export default function App() {
     }
     return 0
   }
-
+  const showPlayer = (currentUser) => {
+    if(currentUser == 1){
+      return <View><Image source={require('./assets/cat.png')} style={styles.player}/></View>
+    }
+    else if (currentUser == -1) {
+      return <View><Image source={require('./assets/dog.png')} style={styles.player}/></View>
+    }
+    else {
+      return
+    }
+  }
   const playerPress = (row, col) => {
     if(gameGrid[row][col] != 0){
       return;
@@ -113,11 +123,11 @@ export default function App() {
     setCurrentUser(currentUser * -1);
     let winner = checkWinner();
     if(winner == 1){
-      Alert.alert('Gana el x');
+      Alert.alert('Gana el Michi!');
       resetGame();
     }
     else if(winner == -1){
-      Alert.alert('Gana el 0');
+      Alert.alert('Gana el Shiba!');
       resetGame();
     }
     else if(winner == 0){
@@ -131,19 +141,22 @@ export default function App() {
       }
       //if there is a draw
       if (isFull){
-        Alert.alert('Nadie pierde');
+        Alert.alert('Empate!');
         resetGame();
       }
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Michi</Text>
+      <View style={styles.titleContainer}>
+        <Image source={require('./assets/titlevs.png')} style={styles.imgtitle}/>
+      </View>
+      <View><Text style={styles.playerTurn}>Turno de:</Text></View>
+      <View style={styles.playerTurnIcon}>{showPlayer(currentUser)}</View>
       <View style={{flexDirection: "row"}}>
         <TouchableOpacity onPress={() => {playerPress(0,0)}} style={[styles.tile, { borderLeftWidth: 0, borderTopWidth: 0 }]}>
           {renderPosition(0, 0)}
-
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {playerPress(0,1)}} style={[styles.tile, { borderTopWidth: 0 }]}>
           {renderPosition(0, 1)}
@@ -174,20 +187,45 @@ export default function App() {
           {renderPosition(2, 2)}
         </TouchableOpacity>
       </View>
+      <View style={styles.btnContainer}>
+        <TouchableOpacity onPress={() => {resetGame()}}> 
+          <Text style={styles.resetButton}>
+            Reiniciar juego
+          </Text>
+        </TouchableOpacity >
+      </View>
     </View>
-    
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ff637d',
+    backgroundColor: '#ff8296',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  titleContainer: {
+    width: 300,
+    height: 100
+  },
   title: {
+    fontSize: 60,
+    color: '#ffffff'
+  },
+  imgtitle: {
+    flex: 1,
+    width: 300,
+    height: 300,
+    resizeMode: 'contain'
+  },
+  playerTurn: {
+    fontSize: 20,
     color: '#ffffff',
+    paddingBottom: 10,
+  },
+  playerTurnIcon: {
+    paddingBottom: 20
   },
   tile: {
     borderWidth: 2,
@@ -195,16 +233,40 @@ const styles = StyleSheet.create({
     height: 100,
     borderColor: '#ffffff',
   },
-  zero: {
-    color: '#ffffff',
-    fontSize: 60,
-    textAlign: 'center',
-    paddingVertical: 13
+  icon: {
+    width: 70, 
+    height: 70,
+    marginLeft: 12,
+    marginTop: 12
   },
-  cross: {
-    color: '#000000',
-    fontSize: 60,
+  player: {
+    width: 40,
+    height: 40
+  },
+  resetBtn: {
+    backgroundColor: 'black',
+    color: 'black'
+  },
+  btnContainer: {
+    marginTop: 20,
+    color: '#000000'
+  },
+  btnpls: {
+    backgroundColor : "yellow",
+  },
+  resetButton: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    fontSize: 20,
+    color: '#ff8296',
     textAlign: 'center',
-    paddingVertical: 13
+    width: 180,
+    height: 40,
+    paddingVertical: 7,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5
   }
 });
