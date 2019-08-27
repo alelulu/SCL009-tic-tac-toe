@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Image, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Image } from 'react-native';
 
 export default function App() {
 
@@ -9,6 +9,8 @@ export default function App() {
     [0, 0, 0],
     [0, 0, 0]
   ]);
+  const [playerMichiWins, setPlayerMichiWins] = useState(0)
+  const [playerShibaWins, setPlayerShibaWins] = useState(0)
 
   const resetGame = () => {
     setGameGrid([
@@ -102,6 +104,7 @@ export default function App() {
     }
     return 0
   }
+
   const showPlayer = (currentUser) => {
     if(currentUser == 1){
       return <View><Image source={require('./assets/cat.png')} style={styles.player}/></View>
@@ -113,6 +116,7 @@ export default function App() {
       return
     }
   }
+
   const playerPress = (row, col) => {
     if(gameGrid[row][col] != 0){
       return;
@@ -124,10 +128,12 @@ export default function App() {
     let winner = checkWinner();
     if(winner == 1){
       Alert.alert('Gana el Michi!');
+      setPlayerMichiWins(playerMichiWins + 1)
       resetGame();
     }
     else if(winner == -1){
       Alert.alert('Gana el Shiba!');
+      setPlayerShibaWins(playerShibaWins + 1) 
       resetGame();
     }
     else if(winner == 0){
@@ -152,8 +158,8 @@ export default function App() {
       <View style={styles.titleContainer}>
         <Image source={require('./assets/titlevs.png')} style={styles.imgtitle}/>
       </View>
-      <View><Text style={styles.playerTurn}>Turno de:</Text></View>
-      <View style={styles.playerTurnIcon}>{showPlayer(currentUser)}</View>
+      <View style={{flexDirection: "row"}}><Text style={styles.playerTurn}>Turno de: </Text>{showPlayer(currentUser)}</View>
+      {/* <View style={styles.playerTurnIcon}>{showPlayer(currentUser)}</View> */}
       <View style={{flexDirection: "row"}}>
         <TouchableOpacity onPress={() => {playerPress(0,0)}} style={[styles.tile, { borderLeftWidth: 0, borderTopWidth: 0 }]}>
           {renderPosition(0, 0)}
@@ -194,6 +200,13 @@ export default function App() {
           </Text>
         </TouchableOpacity >
       </View>
+      <View>
+        <Text style={{color: 'white', fontSize: 20, marginTop: 20}}>Historial de victorias</Text>
+      </View>
+      <View style={{flexDirection: "row"}}>
+        <Image source={require('./assets/cat.png')} style={styles.playerWins}/><Text style={styles.wins}>  :  {playerMichiWins}  /  </Text>
+        <Image source={require('./assets/dog.png')} style={styles.playerWins}/><Text style={styles.wins}>  :  {playerShibaWins}</Text>
+      </View>
     </View>
   );
 };
@@ -220,9 +233,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   playerTurn: {
-    fontSize: 20,
+    fontSize: 30,
     color: '#ffffff',
-    paddingBottom: 10,
+    marginBottom: 20,
+    paddingBottom: 20
   },
   playerTurnIcon: {
     paddingBottom: 20
@@ -240,8 +254,10 @@ const styles = StyleSheet.create({
     marginTop: 12
   },
   player: {
-    width: 40,
-    height: 40
+    width: 30,
+    height: 30,
+    marginBottom: 20,
+    paddingBottom: 20
   },
   resetBtn: {
     backgroundColor: 'black',
@@ -268,5 +284,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 5
+  },
+  wins: {
+    color: 'white', 
+    fontSize: 30, 
+    marginTop: 3
+  },
+  playerWins: {
+    width: 30,
+    height: 30,
+    marginTop: 7
   }
 });
