@@ -1,4 +1,4 @@
-![title](https://i.ibb.co/TgmPnMr/titlevs.png)
+# Michi vs Shiba
 
 Michi vs Shiba is a mobile app based on the classic "Tic tac toe" game with a Cat vs Dog version. 
 
