@@ -1,6 +1,6 @@
 # Michi vs Shiba
 
-Michi vs Shiba is a mobile app based on the classic "Tic tac toe" game with a Cat vs Dog version. 
+Michi vs Shiba is a mobile app created with React Native and It's based on the classic "Tic tac toe" game with a Cat vs Dog version. 
 
 ![phone](https://i.ibb.co/2tfk2hz/readme-img.png)
 
